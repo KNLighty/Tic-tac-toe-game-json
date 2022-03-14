@@ -1,13 +1,19 @@
 package com.company;
 
+import javax.xml.stream.XMLStreamException;
 import java.io.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Game {
+    private static final String RATING_FILE_NAME = "rating.txt";
+    private static final String XML_FILE_NAME = "gameplay.xml";
+
     public final Player PLAYER_1;
     public final Player PLAYER_2;
-    private GameBoard gameBoard;
-    private String RATING_FILE_NAME = "rating.txt";
+    private Gameboard gameBoard;
     private boolean isGameOn;
+    private List<Step> steps = new ArrayList<>();
 
     BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
 
@@ -19,10 +25,13 @@ public class Game {
     public void startGame() throws IOException {
         isGameOn = true;
         while (isGameOn) {
-            gameBoard = new GameBoard();
+            gameBoard = new Gameboard();
+            PLAYER_1.setCurrentWinner(false);
+            PLAYER_2.setCurrentWinner(false);
             while (true) {
                 playGameRound(PLAYER_1);
                 if (gameBoard.isWinnerFound(PLAYER_1)) {
+                    PLAYER_1.setCurrentWinner(true);
                     PLAYER_1.addWin();
                     PLAYER_2.addDefeat();
                     break;
@@ -34,6 +43,7 @@ public class Game {
                 }
                 playGameRound(PLAYER_2);
                 if (gameBoard.isWinnerFound(PLAYER_2)) {
+                    PLAYER_2.setCurrentWinner(true);
                     PLAYER_2.addWin();
                     PLAYER_1.addDefeat();
                     break;
@@ -42,7 +52,7 @@ public class Game {
             gameBoard.printGameBoard();
             System.out.println("Продолжить игру? (Если закончили, введите 'НЕТ')");
             String response = in.readLine();
-            if (response.equalsIgnoreCase("нет")) {
+            if (response.equalsIgnoreCase("нет") || response.equalsIgnoreCase("no")) {
                 endGame();
             };
         }
@@ -57,6 +67,7 @@ public class Game {
             int column = Integer.parseInt(in.readLine());
             if (gameBoard.isCorrectCoords(row, column)) {
                 gameBoard.registerTurn(player, row, column);
+                steps.add(new Step(player.getId(), row, column));
                 break;
             } else {
                 System.out.println("Неверно указаны координаты. Повторяю запрос");
@@ -68,6 +79,7 @@ public class Game {
         isGameOn = false;
         in.close();
         writePlayersRating();
+        writeInXml();
         System.out.println("Всем спасибо за игру! Рейтинг игроков можно посмотреть в текстовом файле.");
     }
 
@@ -92,6 +104,15 @@ public class Game {
             writer.flush();
         } catch (Exception e) {
             System.err.println(e.getMessage());
+        }
+    }
+
+    public void writeInXml() {
+        StaxWriter sw = new StaxWriter(PLAYER_1, PLAYER_2, steps);
+        try(FileOutputStream out = new FileOutputStream(XML_FILE_NAME)){
+            sw.writeXml(out);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 }
