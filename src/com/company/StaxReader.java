@@ -16,10 +16,10 @@ import java.util.List;
 public class StaxReader {
     private static final String XML_FILE_NAME = "gameplay.xml";
 
-    private static List<Player> players = new ArrayList<>(); // последний из трёх элементов (если элементов 3) - победитель
-    private static List<Step> steps = new ArrayList<>();
+    private List<Player> players = new ArrayList<>(); // последний из трёх элементов (если элементов 3) - победитель
+    private List<Step> steps = new ArrayList<>();
 
-    public static void main(String[] args) throws Exception {
+    public void readFromXml() throws Exception {
         XMLInputFactory xmlInputFactory = XMLInputFactory.newInstance();
         XMLEventReader reader = xmlInputFactory.createXMLEventReader(new FileInputStream(XML_FILE_NAME));
 
@@ -52,22 +52,29 @@ public class StaxReader {
                 }
             }
         }
-        printGameInfo();
     }
 
-    private static int getRowFromData(String data) {
+    private int getRowFromData(String data) {
         String[] arr = data.split(" ");
         if (arr.length == 2) return Integer.parseInt(arr[0]);
         else return Integer.parseInt(data.substring(0, 1));
     }
 
-    private static int getColumnFromData(String data) {
+    private int getColumnFromData(String data) {
         String[] arr = data.split(" ");
         if (arr.length == 2) return Integer.parseInt(arr[1]);
         else return Integer.parseInt(data.substring(1));
     }
 
-    private static void printGameInfo() {
+    private Player getWinnerPlayer() {
+        if (players.size() == 3) {
+            return players.get(players.size()-1);
+        } else {
+            return null;
+        }
+    }
+
+    public void printGameInfo() {
         Gameboard gameboard = new Gameboard(3, 3);
         Player winner = getWinnerPlayer();
         for (Step step : steps) {
@@ -75,17 +82,9 @@ public class StaxReader {
         }
         if (getWinnerPlayer() != null) {
             System.out.println("Player " + winner.getId() + " -> "
-                                + winner.getName() + " is winner as '" + winner.getSymbolType() + "'!");
+                    + winner.getName() + " is winner as '" + winner.getSymbolType() + "'!");
         } else {
             System.out.println("Draw!");
-        }
-    }
-
-    private static Player getWinnerPlayer() {
-        if (players.size() == 3) {
-            return players.get(players.size()-1);
-        } else {
-            return null;
         }
     }
 }

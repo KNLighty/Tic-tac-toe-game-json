@@ -13,5 +13,17 @@ public class Main {
         String secondPlayerName = in.readLine();
 	    Game game = new Game(firstPlayerName, secondPlayerName);
         game.startGame();
+        System.out.println("-----Конец игры-----");
+        readAndPrintGameDataFromXml();
+    }
+
+    public static void readAndPrintGameDataFromXml() {
+        StaxReader staxWriter = new StaxReader();
+        try {
+            staxWriter.readFromXml();
+            staxWriter.printGameInfo();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }
