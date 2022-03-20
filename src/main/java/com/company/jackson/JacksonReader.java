@@ -1,5 +1,6 @@
 package com.company.jackson;
 
+import com.company.DataReader;
 import com.company.game.Gameboard;
 import com.company.game.Player;
 import com.company.game.Step;
@@ -8,16 +9,13 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
-import java.util.List;
 import java.util.Map;
 
-public class JacksonReader {
+public class JacksonReader extends DataReader {
     private static final String JSON_FILE_NAME = "gameplay.json";
 
-    private List<Player> playerList = new ArrayList<>(); // последний из трёх элементов (если элементов три) - победитель
-    private List<Step> stepList = new ArrayList<>();
-
-    public void readFromXml() {
+    @Override
+    public void read() {
         try {
             ObjectMapper mapper = new ObjectMapper();
             Map<?, ?> map = mapper.readValue(Paths.get(JSON_FILE_NAME).toFile(), Map.class);
@@ -71,40 +69,6 @@ public class JacksonReader {
             winner.setName(playerDataMap.get("name"));
             winner.setSymbolType(playerDataMap.get("symbol").charAt(0));
             playerList.add(winner);
-        }
-    }
-
-    private int getRowFromData(String data) {
-        String[] arr = data.split(" ");
-        if (arr.length == 2) return Integer.parseInt(arr[0]);
-        else return Integer.parseInt(data.substring(0, 1));
-    }
-
-    private int getColumnFromData(String data) {
-        String[] arr = data.split(" ");
-        if (arr.length == 2) return Integer.parseInt(arr[1]);
-        else return Integer.parseInt(data.substring(1));
-    }
-
-    public void printGameInfo() {
-        Gameboard gameboard = new Gameboard(3, 3);
-        Player winner = getWinnerPlayer();
-        for (Step step : stepList) {
-            gameboard.printGameBoardFromStep(step);
-        }
-        if (getWinnerPlayer() != null) {
-            System.out.println("Player " + winner.getId() + " -> "
-                    + winner.getName() + " is winner as '" + winner.getSymbolType() + "'!");
-        } else {
-            System.out.println("Draw!");
-        }
-    }
-
-    private Player getWinnerPlayer() {
-        if (playerList.size() == 3) {
-            return playerList.get(playerList.size()-1);
-        } else {
-            return null;
         }
     }
 }

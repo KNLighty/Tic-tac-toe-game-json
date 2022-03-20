@@ -1,57 +1,60 @@
 package com.company.stax;
 
+import com.company.DataWriter;
 import com.company.game.Player;
 import com.company.game.Step;
 
 import javax.xml.stream.XMLOutputFactory;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
-import java.io.OutputStream;
+import java.io.FileOutputStream;
 import java.util.List;
 
-public class StaxWriter {
-    private Player player1;
-    private Player player2;
-    private List<Step> stepList;
+public class StaxWriter extends DataWriter {
+
+    private static final String XML_FILE_NAME = "gameplay.xml";
 
     public StaxWriter(Player player1, Player player2, List<Step> stepList) {
-        this.player1 = player1;
-        this.player2 = player2;
-        this.stepList = stepList;
+        super(player1, player2, stepList);
     }
 
-    // StAX Cursor API
-    public void writeXml(OutputStream out) throws XMLStreamException {
-        XMLOutputFactory output = XMLOutputFactory.newInstance();
-        XMLStreamWriter writer = output.createXMLStreamWriter(out);
-        writer.writeStartDocument("utf-8", "1.0");
-        writer.writeDTD("\n");
-        writer.writeStartElement("Gameplay");
-        writer.writeDTD("\n");
+    @Override
+    public void write() {
+        try {
+            FileOutputStream out = new FileOutputStream(XML_FILE_NAME);
+            XMLOutputFactory output = XMLOutputFactory.newInstance();
+            XMLStreamWriter writer = output.createXMLStreamWriter(out);
+            writer.writeStartDocument("utf-8", "1.0");
+            writer.writeDTD("\n");
+            writer.writeStartElement("Gameplay");
+            writer.writeDTD("\n");
 
-        createPlayerNode(writer, player1);
-        createPlayerNode(writer, player2);
+            createPlayerNode(writer, player1);
+            createPlayerNode(writer, player2);
 
-        writer.writeDTD("\t");
-        writer.writeStartElement("Game");
-        writer.writeDTD("\n");
+            writer.writeDTD("\t");
+            writer.writeStartElement("Game");
+            writer.writeDTD("\n");
 
-        int numOfStep = 0;
-        for (Step step : stepList) {
-            numOfStep++;
-            createStepNode(writer, step, numOfStep);
+            int numOfStep = 0;
+            for (Step step : stepList) {
+                numOfStep++;
+                createStepNode(writer, step, numOfStep);
+            }
+
+            writer.writeDTD("\t");
+            writer.writeEndElement();
+            writer.writeDTD("\n");
+
+            createGameResultNode(writer);
+
+            writer.writeEndElement();
+            writer.writeEndDocument();
+            writer.flush();
+            writer.close();
+        } catch (Exception ex) {
+            ex.printStackTrace();
         }
-
-        writer.writeDTD("\t");
-        writer.writeEndElement();
-        writer.writeDTD("\n");
-
-        createGameResultNode(writer);
-
-        writer.writeEndElement();
-        writer.writeEndDocument();
-        writer.flush();
-        writer.close();
     }
 
     private void createPlayerNode(XMLStreamWriter writer, Player player) throws XMLStreamException {

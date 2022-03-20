@@ -1,5 +1,6 @@
 package com.company.jackson;
 
+import com.company.DataWriter;
 import com.company.game.Player;
 import com.company.game.Step;
 import com.fasterxml.jackson.core.util.DefaultPrettyPrinter;
@@ -13,18 +14,16 @@ import java.util.Arrays;
 import java.util.List;
 
 
-public class JacksonWriter {
-  private Player player1;
-  private Player player2;
-  private List<Step> stepList;
+public class JacksonWriter extends DataWriter {
+
+  private static final String JSON_FILE_NAME = "gameplay.json";
 
   public JacksonWriter(Player player1, Player player2, List<Step> stepList) {
-    this.player1 = player1;
-    this.player2 = player2;
-    this.stepList = stepList;
+    super(player1, player2, stepList);
   }
 
-  public void writeInJson() {
+  @Override
+  public void write() {
     try {
       ObjectMapper mapper = new ObjectMapper();
       ObjectWriter writer = mapper.writer(new DefaultPrettyPrinter());
@@ -49,7 +48,7 @@ public class JacksonWriter {
       ObjectNode gameResultNode = createGameResultNode(mapper);
       gameplayNode.set("GameResult", gameResultNode);
 
-      writer.writeValue(Paths.get("gameplay.json").toFile(), mainNode);
+      writer.writeValue(Paths.get(JSON_FILE_NAME).toFile(), mainNode);
     } catch (Exception ex) {
       ex.printStackTrace();
     }

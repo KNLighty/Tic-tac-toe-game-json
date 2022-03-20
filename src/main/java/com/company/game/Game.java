@@ -9,8 +9,7 @@ import java.util.List;
 
 public class Game {
     private static final String RATING_FILE_NAME = "rating.txt";
-    private static final String XML_FILE_NAME = "gameplay.xml";
-    private static final String JSON_FILE_NAME = "gameplay.json";
+
 
     public final Player PLAYER_1;
     public final Player PLAYER_2;
@@ -113,15 +112,11 @@ public class Game {
 
     public void writeInXml() {
         StaxWriter sw = new StaxWriter(PLAYER_1, PLAYER_2, steps);
-        try(FileOutputStream out = new FileOutputStream(XML_FILE_NAME)){
-            sw.writeXml(out);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        sw.write();
     }
 
     private void writeInJson() {
         JacksonWriter jw = new JacksonWriter(PLAYER_1, PLAYER_2, steps);
-        jw.writeInJson();
+        jw.write();
     }
 }

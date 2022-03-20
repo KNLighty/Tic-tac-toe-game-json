@@ -25,7 +25,7 @@ public class Main {
     public static void readAndPrintGameDataFromXml() {
         StaxReader staxReader = new StaxReader();
         try {
-            staxReader.readFromXml();
+            staxReader.read();
             staxReader.printGameInfo();
         } catch (Exception e) {
             e.printStackTrace();
@@ -35,7 +35,7 @@ public class Main {
     private static void readAndPrintGameDataFromJson() {
         JacksonReader jacksonReader = new JacksonReader();
         try {
-            jacksonReader.readFromXml();
+            jacksonReader.read();
             jacksonReader.printGameInfo();
         } catch (Exception e) {
             e.printStackTrace();
