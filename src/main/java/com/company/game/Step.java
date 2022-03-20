@@ -1,4 +1,4 @@
-package com.company;
+package com.company.game;
 
 public class Step {
     private int playerId;

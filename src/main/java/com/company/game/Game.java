@@ -1,6 +1,8 @@
-package com.company;
+package com.company.game;
 
-import javax.xml.stream.XMLStreamException;
+import com.company.jackson.JacksonWriter;
+import com.company.stax.StaxWriter;
+
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -8,6 +10,7 @@ import java.util.List;
 public class Game {
     private static final String RATING_FILE_NAME = "rating.txt";
     private static final String XML_FILE_NAME = "gameplay.xml";
+    private static final String JSON_FILE_NAME = "gameplay.json";
 
     public final Player PLAYER_1;
     public final Player PLAYER_2;
@@ -80,6 +83,7 @@ public class Game {
         in.close();
         writePlayersRating();
         writeInXml();
+        writeInJson();
         System.out.println("Всем спасибо за игру! Рейтинг игроков можно посмотреть в текстовом файле.");
     }
 
@@ -114,5 +118,10 @@ public class Game {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    private void writeInJson() {
+        JacksonWriter jw = new JacksonWriter(PLAYER_1, PLAYER_2, steps);
+        jw.writeInJson();
     }
 }

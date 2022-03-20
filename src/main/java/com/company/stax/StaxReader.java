@@ -1,22 +1,22 @@
-package com.company;
+package com.company.stax;
+
+import com.company.game.Gameboard;
+import com.company.game.Player;
+import com.company.game.Step;
 
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLEventReader;
 import javax.xml.stream.XMLInputFactory;
-import javax.xml.stream.XMLStreamException;
-import javax.xml.stream.events.Attribute;
-import javax.xml.stream.events.EndElement;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 
 public class StaxReader {
     private static final String XML_FILE_NAME = "gameplay.xml";
 
-    private List<Player> players = new ArrayList<>(); // последний из трёх элементов (если элементов 3) - победитель
+    private List<Player> players = new ArrayList<>(); // последний из трёх элементов (если элементов три) - победитель
     private List<Step> steps = new ArrayList<>();
 
     public void readFromXml() throws Exception {

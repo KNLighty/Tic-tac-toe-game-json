@@ -1,5 +1,9 @@
 package com.company;
 
+import com.company.game.Game;
+import com.company.jackson.JacksonReader;
+import com.company.stax.StaxReader;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -14,14 +18,25 @@ public class Main {
 	    Game game = new Game(firstPlayerName, secondPlayerName);
         game.startGame();
         System.out.println("-----Конец игры-----");
-        readAndPrintGameDataFromXml();
+        //readAndPrintGameDataFromXml();
+        readAndPrintGameDataFromJson();
     }
 
     public static void readAndPrintGameDataFromXml() {
-        StaxReader staxWriter = new StaxReader();
+        StaxReader staxReader = new StaxReader();
         try {
-            staxWriter.readFromXml();
-            staxWriter.printGameInfo();
+            staxReader.readFromXml();
+            staxReader.printGameInfo();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private static void readAndPrintGameDataFromJson() {
+        JacksonReader jacksonReader = new JacksonReader();
+        try {
+            jacksonReader.readFromXml();
+            jacksonReader.printGameInfo();
         } catch (Exception e) {
             e.printStackTrace();
         }

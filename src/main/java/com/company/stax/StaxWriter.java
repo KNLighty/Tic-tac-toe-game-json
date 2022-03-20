@@ -1,4 +1,7 @@
-package com.company;
+package com.company.stax;
+
+import com.company.game.Player;
+import com.company.game.Step;
 
 import javax.xml.stream.XMLOutputFactory;
 import javax.xml.stream.XMLStreamException;

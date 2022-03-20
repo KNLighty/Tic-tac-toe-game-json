@@ -1,4 +1,4 @@
-package com.company;
+package com.company.game;
 
 public class Gameboard {
     private char[][] board;

@@ -1,6 +1,8 @@
-package com.company;
+package com.company.game;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Player {
     private static final char[] acceptableSymbols = {'X', '0'};
     private char symbolType;
