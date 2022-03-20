@@ -1,4 +1,4 @@
-package com.company;
+package com.company.data_read;
 
 import com.company.game.Gameboard;
 import com.company.game.Player;

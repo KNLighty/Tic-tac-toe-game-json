@@ -1,8 +1,8 @@
 package com.company;
 
 import com.company.game.Game;
-import com.company.jackson.JacksonReader;
-import com.company.stax.StaxReader;
+import com.company.data_read.JacksonReader;
+import com.company.data_read.StaxReader;
 
 import java.io.BufferedReader;
 import java.io.IOException;

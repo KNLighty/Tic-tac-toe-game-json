@@ -1,4 +1,4 @@
-package com.company;
+package com.company.data_write;
 
 import com.company.game.Player;
 import com.company.game.Step;
@@ -17,4 +17,7 @@ public abstract class DataWriter {
     }
 
     public abstract void write();
+    public abstract void createPlayerNode(Player player1, Player player2);
+    public abstract void createStepNode();
+    public abstract void createGameResultNode();
 }

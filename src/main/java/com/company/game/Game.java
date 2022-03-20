@@ -1,7 +1,7 @@
 package com.company.game;
 
-import com.company.jackson.JacksonWriter;
-import com.company.stax.StaxWriter;
+import com.company.data_write.JacksonWriter;
+import com.company.data_write.StaxWriter;
 
 import java.io.*;
 import java.util.ArrayList;

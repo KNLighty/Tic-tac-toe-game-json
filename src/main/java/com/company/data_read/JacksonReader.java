@@ -1,7 +1,6 @@
-package com.company.jackson;
+package com.company.data_read;
 
-import com.company.DataReader;
-import com.company.game.Gameboard;
+import com.company.data_read.DataReader;
 import com.company.game.Player;
 import com.company.game.Step;
 import com.fasterxml.jackson.databind.ObjectMapper;
